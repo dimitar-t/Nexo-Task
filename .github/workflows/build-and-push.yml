@@ -3,10 +3,13 @@ name: Build and Publish
 on:
   pull_request:
     branches:
-      - "main"
+    - "main"
   push:
 
-defaults:
+permissions:
+  contents: read
+
+jobs:
   build-and-push-docker-image:
     name: Build Docker image and push to repositories
 
