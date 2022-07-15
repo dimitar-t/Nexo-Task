@@ -1,7 +1,9 @@
 FROM python:3.10-alpine
 
-COPY . .
+COPY requirements.txt .
 
-RUN pip install --no-cache-dir --no-color --no-input -q -r requirements.txt 
+RUN pip install --no-cache-dir --no-color --no-input -q -r requirements.txt
 
-CMD ["python", "hello-world.py"]
+COPY hello-world.py app.py
+
+CMD ["python", "app.py"]

@@ -1,7 +1,45 @@
 version: "3"
 
 services:
-  web-server:
+  web:
     image: nexo-hello-world
+    build: .
     ports:
       - 80:80
+    secrets:
+      - mysql_password
+    environment:
+      MYSQL_PASSWORD: /run/secrets/mysql_password
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+    secrets:
+      - mysql_password
+      - mysql_root_password
+    environment:
+      MYSQL_DATABASE: nexo-db
+      MYSQL_USER: nexo
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+    healthcheck:
+      test: ["CMD", "mysql", "--version"]
+      interval: 5s
+      timeout: 30s
+      retries: 10
+      start_period: 5s
+
+secrets:
+  mysql_password:
+    file: ./secrets/mysql_password.txt
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+
+volumes:
+  mysql:
