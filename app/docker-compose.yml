@@ -1,10 +1,17 @@
 version: "3"
 
 services:
-  web-server:
+  web:
     image: nexo-hello-world
+    build: .
     ports:
       - 80:80
+    secrets:
+      - mysql_password
+    environment:
+      MYSQL_PASSWORD: /run/secrets/mysql_password
+    depends_on:
+      - mysql
 
   mysql:
     image: mysql:8
@@ -18,8 +25,8 @@ services:
     environment:
       MYSQL_DATABASE: nexo-db
       MYSQL_USER: nexo
-      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_PASSWORD: /run/secrets/mysql_password
+      MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
 
 secrets:
   mysql_password:
