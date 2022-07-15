@@ -32,8 +32,8 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
-          username: $DOCKER_USERNAME
-          password: $DOCKER_TOKEN
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_TOKEN }}
 
       - name: Build image and push to Docker Hub
         uses: docker/build-push-action@v2
@@ -41,6 +41,6 @@ jobs:
           # relative path to the place where source code with Dockerfile is located
           context: ./app
           # using commit sha to tag the image
-          tags: $DOCKER_USERNAME/nexo-hello-world:$GITHUB_SHA
+          tags: ${{ env.DOCKER_USERNAME }}/nexo-hello-world:${{ github.sha }}
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
