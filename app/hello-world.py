@@ -1,16 +1,18 @@
-from urllib.parse import _ResultMixinStr
 from flask import Flask
 import mysql.connector
 import os
 
 
+
+
 app = Flask(__name__)
+
+mysql_password = open(os.environ.get("MYSQL_PASSWORD")).read()
 db = mysql.connector.connect(
     host="mysql",
-    user="nexo",
-    password=open(os.environ.get("MYSQL_PASSWORD")).read(),
     database="nexo-db",
-    port="3306"
+    user="nexo",
+    password=mysql_password
 )
 
 

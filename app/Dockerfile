@@ -4,6 +4,6 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir --no-color --no-input -q -r requirements.txt
 
-COPY hello-world.py .
+COPY hello-world.py app.py
 
-CMD ["python", "hello-world.py"]
+CMD ["python", "app.py"]

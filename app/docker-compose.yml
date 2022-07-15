@@ -11,7 +11,8 @@ services:
     environment:
       MYSQL_PASSWORD: /run/secrets/mysql_password
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
   mysql:
     image: mysql:8
@@ -25,8 +26,14 @@ services:
     environment:
       MYSQL_DATABASE: nexo-db
       MYSQL_USER: nexo
-      MYSQL_PASSWORD: /run/secrets/mysql_password
-      MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+    healthcheck:
+      test: ["CMD", "mysql", "--version"]
+      interval: 5s
+      timeout: 30s
+      retries: 10
+      start_period: 5s
 
 secrets:
   mysql_password:
