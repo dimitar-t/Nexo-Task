@@ -1,0 +1,46 @@
+name: Build and Publish
+
+on:
+  pull_request:
+    branches:
+    - "main"
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-push-docker-image:
+    name: Build Docker image and push to repositories
+
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+
+    # steps to perform in job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # setup Docker build action
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_TOKEN }}
+
+      - name: Build image and push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./app
+          # using commit sha to tag the image
+          tags: ${{ env.DOCKER_USERNAME }}/nexo-hello-world:${{ github.sha }}
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
