@@ -11,8 +11,8 @@ services:
     environment:
       MYSQL_PASSWORD: /run/secrets/mysql_password
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
+    command: ["./wait-for-it.sh", "-t", "120", "mysql:3306", "--", "python", "hello-world.py"]
 
   mysql:
     image: mysql:8
@@ -28,12 +28,6 @@ services:
       MYSQL_USER: nexo
       MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
-    healthcheck:
-      test: ["CMD", "mysql", "--version"]
-      interval: 5s
-      timeout: 30s
-      retries: 10
-      start_period: 5s
 
 secrets:
   mysql_password:
