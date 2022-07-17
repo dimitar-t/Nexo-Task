@@ -3,7 +3,9 @@ version: "3"
 services:
   web:
     image: nexo-hello-world
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.local
     ports:
       - 80:80
     secrets:

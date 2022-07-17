@@ -2,9 +2,6 @@ from flask import Flask
 import mysql.connector
 import os
 
-
-
-
 app = Flask(__name__)
 
 mysql_password = open(os.environ.get("MYSQL_PASSWORD")).read()
