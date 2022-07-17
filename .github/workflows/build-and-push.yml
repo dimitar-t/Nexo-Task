@@ -41,6 +41,6 @@ jobs:
           # relative path to the place where source code with Dockerfile is located
           context: ./app
           # using commit sha to tag the image
-          tags: ${{ env.DOCKER_USERNAME }}/nexo-hello-world:${{ github.sha }}
+          tags: ${{ env.DOCKER_USERNAME }}/nexo-hello-world:${{ github.sha }} , ${{ env.DOCKER_USERNAME }}/nexo-hello-world:latest
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}

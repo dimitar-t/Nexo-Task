@@ -14,8 +14,10 @@ spec:
     spec:
       containers:
       - name: nexo-hello-world
-        image: dimitartachev23/nexo-hello-world:local-test
+        image: dimitartachev23/nexo-hello-world:latest
         env:
+          - name: ENVIRONMENT
+            value: production
           - name: MYSQL_PASSWORD
             valueFrom:
               secretKeyRef:

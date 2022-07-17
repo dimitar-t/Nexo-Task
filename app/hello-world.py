@@ -4,7 +4,11 @@ import os
 
 app = Flask(__name__)
 
-mysql_password = open(os.environ.get("MYSQL_PASSWORD")).read()
+if (os.environ.get("ENVIRONMENT") == "local"):
+    mysql_password = open(os.environ.get("MYSQL_PASSWORD")).read()
+else:
+    mysql_password = os.environ.get("MYSQL_PASSWORD")
+
 db = mysql.connector.connect(
     host="mysql",
     database="nexo-db",
