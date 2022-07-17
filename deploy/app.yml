@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexo-hello-world
+spec:
+  selector:
+    matchLabels:
+      app: nexo-hello-world
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nexo-hello-world
+    spec:
+      containers:
+      - name: nexo-hello-world
+        image: dimitartachev23/nexo-hello-world:latest
+        env:
+          - name: ENVIRONMENT
+            value: production
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credentials
+                key: user-password
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexo-hello-world-service
+spec:
+  selector:
+    app: nexo-hello-world
+  ports:
+  - name: nexo-hello-world-port
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+  type: NodePort
