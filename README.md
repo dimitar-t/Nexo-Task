@@ -8,6 +8,8 @@ Very simple Python Flask web server which serves 2 endpoints:
 
 
 ## How to run locally  
+You **must** populate the two files in the *secrets* subdirectory with passwords of your choosing.  
+
 You need to be in the */app* directory and run *docker-compose up --build* in order to get the app image built locally before running the compose.
 
 There are two Dockerfiles present, because locally the app needs to wait for the MySQL to start up, which initially takes somewhat long. This brought up the need for the **wait-for-it** bash script(Reference: https://docs.docker.com/compose/startup-order/). This script contains bashims and thus cannot be run on an Alpine image.  
